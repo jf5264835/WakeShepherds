@@ -1,0 +1,1 @@
+ALTER TABLE `hospital_care` ADD `notes` text DEFAULT '' NOT NULL;
