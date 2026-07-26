@@ -28,7 +28,7 @@ The archive intentionally contains **no live care records or secrets**.
 - npm 10 or newer
 - For production: HTTPS and persistent storage
 
-## Quick local setup
+## Quick local setup guide
 
 1. Install dependencies:
 
