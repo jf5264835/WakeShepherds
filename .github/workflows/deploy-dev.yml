@@ -1,4 +1,4 @@
-name: Build and Deploy Development
+name: Deploy Development
 
 on:
   push:
@@ -29,12 +29,63 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to GitHub Container Registry
+      - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish container
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ env.IMAGE_NAME }}:dev
+            ghcr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to Development
+    runs-on: ubuntu-latest
+    needs: build
+
+    environment:
+      name: development
+
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+
+          echo "${{ secrets.DEV_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          ssh-keyscan \
+            -p "${{ secrets.DEV_SSH_PORT }}" \
+            -H "${{ secrets.DEV_HOST }}" \
+            >> ~/.ssh/known_hosts
+
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Deploy latest development image
+        run: |
+          ssh \
+            -p "${{ secrets.DEV_SSH_PORT }}" \
+            -i ~/.ssh/id_ed25519 \
+            "${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}" \
+            'cd /opt/wakeshepherds-dev && docker compose pull && docker compose up -d --remove-orphans --wait'
+
+      - name: Show deployment status
+        run: |
+          ssh \
+            -p "${{ secrets.DEV_SSH_PORT }}" \
+            -i ~/.ssh/id_ed25519 \
+            "${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}" \
+            'cd /opt/wakeshepherds-dev && docker compose ps'          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and publish container
         uses: docker/build-push-action@v6
