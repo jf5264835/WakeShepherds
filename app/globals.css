@@ -523,15 +523,15 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 20px
 .admin-header h1 { margin: 4px 0; font: 500 40px Georgia, serif; color: var(--navy); }
 .admin-header p { margin: 0; color: var(--muted); }
 .admin-header .primary-button { text-decoration: none; }
-.admin-grid { max-width: 1200px; margin: 0 auto 24px; display: grid; grid-template-columns: 360px 1fr; gap: 20px; }
-.admin-card { padding: 24px; }
+.admin-grid { max-width: 1200px; margin: 0 auto 24px; display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 20px; }
+.admin-card { min-width: 0; padding: 24px; }
 .admin-card h2 { margin: 0 0 18px; color: var(--navy); font: 500 24px Georgia, serif; }
 .admin-form { display: grid; gap: 14px; }
 .admin-form label { display: grid; gap: 6px; color: #52636f; font-size: 11px; font-weight: 800; text-transform: uppercase; }
 .admin-form input, .admin-form select { padding: 10px; border: 1px solid #ccd8e0; border-radius: 9px; background: #fbfcfd; }
 .admin-user-list { display: grid; gap: 10px; }
-.admin-user { display: grid; grid-template-columns: minmax(190px, 1.5fr) repeat(7, auto) auto; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 12px; }
-.admin-user > div { display: grid; gap: 3px; }.admin-user span { color: var(--muted); font-size: 11px; }.admin-user label { font-size: 11px; white-space: nowrap; }
+.admin-user { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; padding: 14px; border: 1px solid var(--line); border-radius: 12px; }
+.admin-user > div { flex: 1 1 190px; min-width: 0; display: grid; gap: 3px; }.admin-user span { overflow-wrap: anywhere; color: var(--muted); font-size: 11px; }.admin-user label { font-size: 11px; white-space: nowrap; }
 .audit-card { max-width: 1200px; margin: 0 auto; }.audit-list { display: grid; }.audit-list > div { display: grid; grid-template-columns: 180px 150px 1fr; gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); font-size: 12px; }.audit-list time { color: var(--muted); }
 .notice-banner { max-width: 1200px; margin: 0 auto 16px; padding: 12px 14px; border-radius: 10px; background: var(--sage); color: var(--sage-dark); }
 .archive-list { display: grid; gap: 10px; }.archive-list > div { display: flex; justify-content: space-between; gap: 20px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }.archive-list > div > div { display: grid; gap: 4px; }.archive-list span { color: var(--muted); font-size: 11px; }

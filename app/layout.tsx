@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     "codex-preview": "development",
   },
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+    icon: "/app-icon-192.png",
+    shortcut: "/app-icon-192.png",
     apple: "/apple-touch-icon.png",
   },
 };
