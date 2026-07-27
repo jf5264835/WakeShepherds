@@ -606,7 +606,7 @@ export default function Home() {
 
         <footer>
           <span>Changes are attributed to the signed-in account.</span>
-          <span>Pastoral care is personal. Keep identifying details to a minimum. · v{packageJson.version}</span>
+          <span>Pastoral care is personal. Keep identifying details to a minimum. · Kai · v{packageJson.version}</span>
         </footer>
       </div>
 
