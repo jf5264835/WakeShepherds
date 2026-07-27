@@ -1,39 +1,39 @@
-  deploy:
-    name: Deploy to Development
-    runs-on: ubuntu-latest
-    needs: build
+deploy:
+  name: Deploy to Development
+  runs-on: ubuntu-latest
+  needs: build
 
-    environment:
-      name: development
+  environment:
+    name: development
 
-    steps:
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
+  steps:
+    - name: Configure SSH
+      run: |
+        mkdir -p ~/.ssh
+        chmod 700 ~/.ssh
 
-          echo "${{ secrets.DEV_SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
+        echo "${{ secrets.DEV_SSH_KEY }}" > ~/.ssh/id_ed25519
+        chmod 600 ~/.ssh/id_ed25519
 
-          ssh-keyscan \
-            -p "${{ secrets.DEV_SSH_PORT }}" \
-            -H "${{ secrets.DEV_HOST }}" \
-            >> ~/.ssh/known_hosts
+        ssh-keyscan \
+          -p "${{ secrets.DEV_SSH_PORT }}" \
+          -H "${{ secrets.DEV_HOST }}" \
+          >> ~/.ssh/known_hosts
 
-          chmod 600 ~/.ssh/known_hosts
+        chmod 600 ~/.ssh/known_hosts
 
-      - name: Deploy latest development image
-        run: |
-          ssh \
-            -p "${{ secrets.DEV_SSH_PORT }}" \
-            -i ~/.ssh/id_ed25519 \
-            "${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}" \
-            'cd /opt/wakeshepherds-dev && docker compose pull && docker compose up -d --remove-orphans --wait'
+    - name: Deploy latest development image
+      run: |
+        ssh \
+          -p "${{ secrets.DEV_SSH_PORT }}" \
+          -i ~/.ssh/id_ed25519 \
+          "${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}" \
+          'cd /opt/wakeshepherds-dev && docker compose pull && docker compose up -d --remove-orphans --wait'
 
-      - name: Show deployment status
-        run: |
-          ssh \
-            -p "${{ secrets.DEV_SSH_PORT }}" \
-            -i ~/.ssh/id_ed25519 \
-            "${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}" \
-            'cd /opt/wakeshepherds-dev && docker compose ps'
+    - name: Show deployment status
+      run: |
+        ssh \
+          -p "${{ secrets.DEV_SSH_PORT }}" \
+          -i ~/.ssh/id_ed25519 \
+          "${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}" \
+          'cd /opt/wakeshepherds-dev && docker compose ps'
