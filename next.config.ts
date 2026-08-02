@@ -1,5 +1,22 @@
 import type { NextConfig } from "next";
+import { execFileSync } from "node:child_process";
 import { networkInterfaces } from "node:os";
+
+function getCommitId(): string {
+  const deploymentCommit = process.env.VERCEL_GIT_COMMIT_SHA
+    ?? process.env.GITHUB_SHA
+    ?? process.env.COMMIT_SHA;
+
+  if (deploymentCommit) return deploymentCommit.slice(0, 7);
+
+  try {
+    return execFileSync("git", ["rev-parse", "--short=7", "HEAD"], {
+      encoding: "utf8",
+    }).trim();
+  } catch {
+    return "unknown";
+  }
+}
 
 function hostnameFromOrigin(value: string): string {
   const candidate = value.trim();
@@ -34,6 +51,9 @@ const allowedDevOrigins = [
 
 const nextConfig: NextConfig = {
   allowedDevOrigins,
+  env: {
+    NEXT_PUBLIC_COMMIT_ID: getCommitId(),
+  },
   output: "standalone",
   poweredByHeader: false,
   reactStrictMode: true,

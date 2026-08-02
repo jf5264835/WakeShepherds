@@ -2,7 +2,6 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import DashboardNavigation from "../components/DashboardNavigation";
-import packageJson from "../package.json";
 
 type CareLane =
   | "Immediate care"
@@ -606,7 +605,7 @@ export default function Home() {
 
         <footer>
           <span>Changes are attributed to the signed-in account.</span>
-          <span>Pastoral care is personal. Keep identifying details to a minimum. · Kai · v{packageJson.version}</span>
+          <span>Pastoral care is personal. Keep identifying details to a minimum. · Commit {process.env.NEXT_PUBLIC_COMMIT_ID}</span>
         </footer>
       </div>
 
